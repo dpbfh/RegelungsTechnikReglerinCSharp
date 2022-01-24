@@ -79,7 +79,7 @@ namespace Regler.Data
          public string GetZForm(string Laplace)
         {
 
-          string s = "((1/Ts)*(1-z^-1))";
+          string s = "((1/Ts)*(1-z^(-1)))";
           return Laplace.Replace("*s", s);
         }
     }

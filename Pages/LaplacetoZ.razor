@@ -6,6 +6,9 @@
 
 <input placeholder="Something todo" @bind="Laplacestring" />
 <button @onclick="AddLaplacestring">LaplaceToZ</button>
+<h1 >y(z)... Outputsignal</h1>
+<h1 >x(z)... Inputsignal</h1>
+
 <h1 >@Zstring</h1>
 @code {
    private string? Laplacestring;
@@ -16,7 +19,8 @@
         if (!string.IsNullOrWhiteSpace(Laplacestring))
         {
            Zstring = ReglerService.GetZForm(Laplacestring);
-           Zstring = "("+Zstring+")";
+           Zstring = "y(z)=("+Zstring+")*x(z)";
+
            System.Console.WriteLine(Zstring);
         }
     }
