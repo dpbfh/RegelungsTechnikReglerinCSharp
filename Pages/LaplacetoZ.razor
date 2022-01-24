@@ -1,0 +1,23 @@
+@page "/ztrans"
+@using Regler.Data
+
+@inject ReglerService ReglerService
+<PageTitle>LaplaceToZ</PageTitle>
+
+<input placeholder="Something todo" @bind="Laplacestring" />
+<button @onclick="AddLaplacestring">LaplaceToZ</button>
+<h1 >@Zstring</h1>
+@code {
+   private string? Laplacestring;
+   private string? Zstring;
+
+   private void AddLaplacestring()
+    {
+        if (!string.IsNullOrWhiteSpace(Laplacestring))
+        {
+           Zstring = ReglerService.GetZForm(Laplacestring);
+           Zstring = "("+Zstring+")";
+           System.Console.WriteLine(Zstring);
+        }
+    }
+}
