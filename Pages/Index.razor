@@ -1,0 +1,68 @@
+@page "/"
+@using Regler.Data
+
+@inject ReglerService ReglerService
+@* Visualisierung von https://github.com/LayTec-AG/Plotly.Blazor *@
+<PageTitle>Regler</PageTitle>
+
+<h1>PI-Regler</h1>
+<PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="datapi" @ref="chart" />
+<h1>PT1-Regler</h1>
+<PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="datapt1" @ref="chart" />
+
+@code {
+    PlotlyChart chart;
+    Config config = new Config();
+    Layout layout = new Layout();
+    IList<ITrace> datapt1;
+    // Using of the interface IList is important for the event callback!
+    IList<ITrace> datapi;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadPI();
+        LoadPT1();
+    }
+
+    private void LoadPI(){
+         var tuple = ReglerService.GetPIRegler();
+        IList<object> y =tuple.Item1.Select(v => v as object).ToList();
+        IList<object> x = tuple.Item2.Select(v => v as object).ToList();
+        datapi = new List<ITrace>
+        {
+            new Scatter
+            {
+            Name = "u(t)...Stellgröße",
+            X = x,
+            Y = y,
+            },
+            new Scatter
+            {
+            Name = "e(t)...Regeldifferenz",
+            X = x,
+            Y = Enumerable.Repeat<object>(1,y.Count).ToList()
+            }
+        };
+    }
+
+        private void LoadPT1(){
+         var tuple = ReglerService.GetPT1Regler();
+        IList<object> y =tuple.Item1.Select(v => v as object).ToList();
+        IList<object> x = tuple.Item2.Select(v => v as object).ToList();
+        datapt1 = new List<ITrace>
+        {
+            new Scatter
+            {
+            Name = "y(t)...Stellgröße",
+            X = x,
+            Y = y,
+            },
+            new Scatter
+            {
+            Name = "u(t)...Regeldifferenz",
+            X = x,
+            Y = Enumerable.Repeat<object>(1,y.Count).ToList()
+            }
+        };
+    }
+}
